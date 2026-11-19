@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Simulateur de file d’attente</title>
+    <script src="app.js" defer></script>
+</head>
+<body>
+    <main>
+        <h1>Simulateur de file d’attente</h1>
+        <form id="client-form" novalidate>
+            <p>Les heures et durées sont exprimées en minutes entières.</p>
+            <p>
+                <label for="client-name">Nom du client</label>
+                <input id="client-name" name="name" required>
+            </p>
+            <p>
+                <label for="arrival">Heure d’arrivée</label>
+                <input id="arrival" name="arrival" type="number" min="0" step="1" required>
+            </p>
+            <p>
+                <label for="duration">Durée du service</label>
+                <input id="duration" name="duration" type="number" min="1" step="1" required>
+            </p>
+            <button type="submit">Ajouter le client</button>
+        </form>
+        <p id="status" role="status"></p>
+        <p id="empty-list">Aucun client ajouté.</p>
+        <table id="clients-table" hidden>
+            <caption>Clients dans leur ordre d’ajout</caption>
+            <thead>
+                <tr><th scope="col">Nom</th><th scope="col">Arrivée (min)</th><th scope="col">Durée (min)</th><th scope="col">Action</th></tr>
+            </thead>
+            <tbody id="clients"></tbody>
+        </table>
+    </main>
+</body>
+</html>
