@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Simulateur de file d’attente</title>
+    <script src="fifo.js" defer></script>
     <script src="app.js" defer></script>
 </head>
 <body>
@@ -34,6 +35,18 @@
             </thead>
             <tbody id="clients"></tbody>
         </table>
+        <button id="run-fifo" type="button">Simuler FIFO</button>
+        <section id="fifo-result" aria-labelledby="fifo-title" hidden>
+            <h2 id="fifo-title" tabindex="-1">Résultat FIFO</h2>
+            <p>À arrivée égale, les clients sont servis dans leur ordre d’ajout.</p>
+            <table>
+                <caption>Ordre de service et horaires en minutes</caption>
+                <thead>
+                    <tr><th scope="col">Client</th><th scope="col">Arrivée</th><th scope="col">Durée</th><th scope="col">Début</th><th scope="col">Fin</th><th scope="col">Attente</th></tr>
+                </thead>
+                <tbody id="fifo-rows"></tbody>
+            </table>
+        </section>
     </main>
 </body>
 </html>

@@ -6,6 +6,9 @@ const statusMessage = document.querySelector("#status");
 const table = document.querySelector("#clients-table");
 const rows = document.querySelector("#clients");
 const emptyList = document.querySelector("#empty-list");
+const runFIFO = document.querySelector("#run-fifo");
+const fifoResult = document.querySelector("#fifo-result");
+const fifoRows = document.querySelector("#fifo-rows");
 const clients = [];
 let nextId = 1;
 
@@ -39,6 +42,8 @@ form.addEventListener("submit", (event) => {
 });
 
 function renderClients() {
+    fifoResult.hidden = true;
+    fifoRows.replaceChildren();
     rows.replaceChildren();
     for (const client of clients) {
         const row = document.createElement("tr");
@@ -69,3 +74,32 @@ function renderClients() {
     table.hidden = clients.length === 0;
     emptyList.hidden = clients.length > 0;
 }
+
+runFIFO.addEventListener("click", () => {
+    fifoResult.hidden = true;
+    fifoRows.replaceChildren();
+    if (clients.length === 0) {
+        statusMessage.textContent = "Ajoute au moins un client avant de simuler.";
+        return;
+    }
+
+    let schedule;
+    try {
+        schedule = simulateFIFO(clients);
+    } catch (error) {
+        statusMessage.textContent = error.message;
+        return;
+    }
+    for (const client of schedule) {
+        const row = document.createElement("tr");
+        for (const value of [client.name, client.arrival, client.duration, client.start, client.end, client.waiting]) {
+            const cell = document.createElement("td");
+            cell.textContent = String(value);
+            row.append(cell);
+        }
+        fifoRows.append(row);
+    }
+    fifoResult.hidden = false;
+    statusMessage.textContent = "Simulation FIFO terminée.";
+    document.querySelector("#fifo-title").focus();
+});
