@@ -13,7 +13,30 @@ const comparisonButton = document.querySelector("#run-comparison");
 const shortestResult = document.querySelector("#shortest-result");
 const shortestRows = document.querySelector("#shortest-rows");
 const clients = [];
+const stepViews = {};
 let nextId = 1;
+
+for (const id of ["fifo", "shortest"]) {
+    const container = document.querySelector(`#${id}-steps`);
+    const view = {
+        schedule: [],
+        times: [],
+        index: 0,
+        status: container.querySelector(".step-status"),
+        next: container.querySelector(".step-next")
+    };
+    stepViews[id] = view;
+    view.next.addEventListener("click", () => {
+        if (view.index < view.times.length - 1) {
+            view.index++;
+            renderStep(view);
+        }
+    });
+    container.querySelector(".step-reset").addEventListener("click", () => {
+        view.index = 0;
+        renderStep(view);
+    });
+}
 
 form.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -85,6 +108,11 @@ function clearResults() {
     document.querySelector("#fifo-average").textContent = "";
     document.querySelector("#shortest-average").textContent = "";
     for (const id of ["fifo", "shortest"]) {
+        stepViews[id].schedule = [];
+        stepViews[id].times = [];
+        stepViews[id].index = 0;
+        stepViews[id].status.textContent = "";
+        stepViews[id].next.disabled = true;
         document.querySelector(`#${id}-timeline`).replaceChildren();
         document.querySelector(`#${id}-timeline-details`).replaceChildren();
     }
@@ -113,11 +141,13 @@ function runSimulation(compare) {
     }
     renderSchedule(schedule, fifoRows);
     renderTimeline(schedule, "fifo");
+    prepareSteps(schedule, "fifo");
     fifoResult.hidden = false;
     document.querySelector("#fifo-average").textContent = averageLabel(schedule);
     if (compare) {
         renderSchedule(shortestSchedule, shortestRows);
         renderTimeline(shortestSchedule, "shortest");
+        prepareSteps(shortestSchedule, "shortest");
         shortestResult.hidden = false;
         document.querySelector("#shortest-average").textContent = averageLabel(shortestSchedule);
     }
@@ -128,6 +158,30 @@ function runSimulation(compare) {
 function averageLabel(schedule) {
     const average = schedule.reduce((mean, client) => mean + client.waiting / schedule.length, 0);
     return `Attente moyenne : ${average.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} min.`;
+}
+
+function prepareSteps(schedule, id) {
+    const view = stepViews[id];
+    view.schedule = schedule;
+    view.times = [...new Set([0, ...schedule.flatMap((client) => [client.arrival, client.start, client.end])])]
+        .sort((a, b) => a - b);
+    view.index = 0;
+    renderStep(view);
+}
+
+function renderStep(view) {
+    if (view.times.length === 0) {
+        return;
+    }
+    const time = view.times[view.index];
+    const current = view.schedule.find((client) => client.start <= time && time < client.end);
+    const waiting = view.schedule
+        .filter((client) => client.arrival <= time && time < client.start)
+        .map((client) => client.name);
+    const finished = view.index === view.times.length - 1;
+    const service = current ? current.name : finished ? "Terminé" : "Guichet libre";
+    view.status.textContent = `Heure : ${time} min · Service : ${service} · En attente : ${waiting.join(", ") || "Personne"}`;
+    view.next.disabled = finished;
 }
 
 function renderSchedule(schedule, target) {

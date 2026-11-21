@@ -43,6 +43,11 @@
             <h2 id="fifo-title" tabindex="-1">Résultat FIFO</h2>
             <p>À arrivée égale, les clients sont servis dans leur ordre d’ajout.</p>
             <p id="fifo-average"></p>
+            <div id="fifo-steps">
+                <p class="step-status" role="status"></p>
+                <button class="step-next" type="button">Étape suivante</button>
+                <button class="step-reset" type="button">Réinitialiser</button>
+            </div>
             <figure>
                 <figcaption>Occupation du guichet FIFO, depuis 0 minute</figcaption>
                 <div id="fifo-timeline" class="timeline"></div>
@@ -60,6 +65,11 @@
             <h2 id="shortest-title">Service le plus court</h2>
             <p>Parmi les clients déjà arrivés, le service le plus court commence en premier. Un service commencé se termine avant de choisir le suivant. À durée égale, priorité à l’arrivée puis à l’ordre d’ajout.</p>
             <p id="shortest-average"></p>
+            <div id="shortest-steps">
+                <p class="step-status" role="status"></p>
+                <button class="step-next" type="button">Étape suivante</button>
+                <button class="step-reset" type="button">Réinitialiser</button>
+            </div>
             <figure>
                 <figcaption>Occupation du guichet, service le plus court, depuis 0 minute</figcaption>
                 <div id="shortest-timeline" class="timeline"></div>
