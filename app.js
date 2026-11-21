@@ -84,6 +84,10 @@ function clearResults() {
     shortestRows.replaceChildren();
     document.querySelector("#fifo-average").textContent = "";
     document.querySelector("#shortest-average").textContent = "";
+    for (const id of ["fifo", "shortest"]) {
+        document.querySelector(`#${id}-timeline`).replaceChildren();
+        document.querySelector(`#${id}-timeline-details`).replaceChildren();
+    }
 }
 
 runFIFO.addEventListener("click", () => runSimulation(false));
@@ -108,10 +112,12 @@ function runSimulation(compare) {
         return;
     }
     renderSchedule(schedule, fifoRows);
+    renderTimeline(schedule, "fifo");
     fifoResult.hidden = false;
     document.querySelector("#fifo-average").textContent = averageLabel(schedule);
     if (compare) {
         renderSchedule(shortestSchedule, shortestRows);
+        renderTimeline(shortestSchedule, "shortest");
         shortestResult.hidden = false;
         document.querySelector("#shortest-average").textContent = averageLabel(shortestSchedule);
     }
@@ -133,5 +139,37 @@ function renderSchedule(schedule, target) {
             row.append(cell);
         }
         target.append(row);
+    }
+}
+
+function renderTimeline(schedule, id) {
+    const timeline = document.querySelector(`#${id}-timeline`);
+    const details = document.querySelector(`#${id}-timeline-details`);
+    const total = schedule[schedule.length - 1].end;
+    let previousEnd = 0;
+
+    function addSegment(label, start, end, idle) {
+        const segment = document.createElement("div");
+        const description = `${label} · de ${start} à ${end} min · durée ${end - start} min`;
+        segment.className = idle ? "timeline-segment idle" : "timeline-segment";
+        segment.style.flexBasis = `${(end - start) / total * 100}%`;
+        segment.tabIndex = 0;
+        segment.setAttribute("role", "img");
+        segment.setAttribute("aria-label", description);
+        segment.title = description;
+        const item = document.createElement("li");
+        item.id = `${id}-segment-${details.children.length}`;
+        item.textContent = description;
+        segment.setAttribute("aria-describedby", item.id);
+        timeline.append(segment);
+        details.append(item);
+    }
+
+    for (const client of schedule) {
+        if (client.start > previousEnd) {
+            addSegment("Guichet libre", previousEnd, client.start, true);
+        }
+        addSegment(client.name, client.start, client.end, false);
+        previousEnd = client.end;
     }
 }
