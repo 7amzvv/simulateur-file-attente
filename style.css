@@ -1,3 +1,93 @@
+:root {
+    color: #243329;
+    background: #f6f8f4;
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+}
+
+body {
+    margin: 0;
+}
+
+main {
+    max-width: 60rem;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    overflow-wrap: anywhere;
+}
+
+h1 {
+    font-size: clamp(1.6rem, 4vw, 2rem);
+    line-height: 1.2;
+}
+
+label {
+    display: block;
+}
+
+input,
+button {
+    box-sizing: border-box;
+    max-width: 100%;
+    min-height: 2.75rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #849a89;
+    border-radius: 0.25rem;
+    color: inherit;
+    background: #fff;
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+button[type="submit"],
+#run-fifo,
+#run-comparison {
+    color: #fff;
+    background: #345d43;
+}
+
+:is(button, input):focus-visible {
+    outline: 2px solid #345d43;
+    outline-offset: 2px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-variant-numeric: tabular-nums;
+}
+
+th,
+td {
+    padding: 0.5rem;
+    border-bottom: 1px solid #bdcbbf;
+    text-align: left;
+}
+
+.table-scroll {
+    overflow-x: auto;
+}
+
+section {
+    margin-top: 2rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #bdcbbf;
+}
+
+footer {
+    margin: 2rem 0;
+    color: #415648;
+}
+
 figure {
     margin: 1rem 0;
 }

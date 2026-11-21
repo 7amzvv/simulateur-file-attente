@@ -30,13 +30,13 @@
         </form>
         <p id="status" role="status"></p>
         <p id="empty-list">Aucun client ajouté.</p>
-        <table id="clients-table" hidden>
+        <div class="table-scroll"><table id="clients-table" hidden>
             <caption>Clients dans leur ordre d’ajout</caption>
             <thead>
                 <tr><th scope="col">Nom</th><th scope="col">Arrivée (min)</th><th scope="col">Durée (min)</th><th scope="col">Action</th></tr>
             </thead>
             <tbody id="clients"></tbody>
-        </table>
+        </table></div>
         <button id="run-fifo" type="button">Simuler FIFO</button>
         <button id="run-comparison" type="button">Comparer les deux algorithmes</button>
         <section id="fifo-result" aria-labelledby="fifo-title" hidden>
@@ -53,13 +53,13 @@
                 <div id="fifo-timeline" class="timeline"></div>
                 <ol id="fifo-timeline-details"></ol>
             </figure>
-            <table>
+            <div class="table-scroll"><table>
                 <caption>Ordre de service et horaires en minutes</caption>
                 <thead>
                     <tr><th scope="col">Client</th><th scope="col">Arrivée</th><th scope="col">Durée</th><th scope="col">Début</th><th scope="col">Fin</th><th scope="col">Attente</th></tr>
                 </thead>
                 <tbody id="fifo-rows"></tbody>
-            </table>
+            </table></div>
         </section>
         <section id="shortest-result" aria-labelledby="shortest-title" hidden>
             <h2 id="shortest-title">Service le plus court</h2>
@@ -75,14 +75,15 @@
                 <div id="shortest-timeline" class="timeline"></div>
                 <ol id="shortest-timeline-details"></ol>
             </figure>
-            <table>
+            <div class="table-scroll"><table>
                 <caption>Ordre de service et horaires en minutes</caption>
                 <thead>
                     <tr><th scope="col">Client</th><th scope="col">Arrivée</th><th scope="col">Durée</th><th scope="col">Début</th><th scope="col">Fin</th><th scope="col">Attente</th></tr>
                 </thead>
                 <tbody id="shortest-rows"></tbody>
-            </table>
+            </table></div>
         </section>
+        <footer>Réalisé par hamzafadli.</footer>
     </main>
 </body>
 </html>
